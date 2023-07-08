@@ -29,6 +29,9 @@ export default class User extends BaseModel {
   @column()
   public photo_url: string
 
+  @column()
+  public is_admin: Boolean
+
   @column.dateTime({ autoCreate: true })
   public created_at: DateTime
 

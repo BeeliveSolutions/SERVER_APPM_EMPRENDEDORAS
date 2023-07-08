@@ -12,6 +12,8 @@ export default class UserController {
     }
   }
 
+
+  
   public async show({ params, response }: HttpContextContract) {
     try {
       const user = await User.findOrFail(params.id)
@@ -35,6 +37,12 @@ export default class UserController {
         'photo_url',
       ])
 
+      // Verificar se o email já está sendo usado
+      const existingUser = await User.findBy('email', data.email)
+      if (existingUser) {
+        return response.status(400).send('Email already exists')
+      }
+
       const user = await User.create(data)
       return response.created(user)
     } catch (error) {
@@ -56,6 +64,15 @@ export default class UserController {
         'is_entrepreneur',
         'photo',
       ])
+
+      // Verificar se o email já está sendo usado por outro usuário
+      if (data.email && data.email !== user.email) {
+        const existingUser = await User.findBy('email', data.email)
+        if (existingUser) {
+          return response.status(400).send('Email already exists')
+        }
+      }
+
       user.merge(data)
       await user.save()
       return response.ok(user)

@@ -8,10 +8,10 @@ Route.group(() => {
   Route.get('/users', 'UsersController.index')
   Route.get('/users/:id', 'UsersController.show')
   Route.post('/users', 'UsersController.store')
-  
+
   Route.get('/companies', 'CompaniesController.index')
   Route.get('/companies/:id', 'CompaniesController.show')
-  
+
   Route.get('/categories', 'CategoriesController.index')
   Route.get('/categories/:id', 'CategoriesController.show')
 })
@@ -24,8 +24,10 @@ Route.group(() => {
   Route.post('/companies', 'CompaniesController.store')
   Route.put('/companies/:id', 'CompaniesController.update')
   Route.delete('/companies/:id', 'CompaniesController.destroy')
+}).middleware(['auth'])
 
+Route.group(() => {
   Route.post('/categories', 'CategoriesController.store')
   Route.put('/categories/:id', 'CategoriesController.update')
   Route.delete('/categories/:id', 'CategoriesController.destroy')
-}).middleware(['auth'])
+}).middleware(['auth', 'admin'])
