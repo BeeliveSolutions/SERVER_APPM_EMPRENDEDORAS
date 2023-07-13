@@ -1,25 +1,33 @@
-/*
-|--------------------------------------------------------------------------
-| Routes
-|--------------------------------------------------------------------------
-|
-| This file is dedicated for defining HTTP routes. A single file is enough
-| for majority of projects, however you can define routes in different
-| files and just make sure to import them inside this file. For example
-|
-| Define routes in following two files
-| ├── start/routes/cart.ts
-| ├── start/routes/customer.ts
-|
-| and then import them inside `start/routes.ts` as follows
-|
-| import './routes/cart'
-| import './routes/customer'
-|
-*/
-
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
+Route.group(() => {
+  // Rotas não autenticadas
+  Route.post('/login', 'SessionsController.store')
+  Route.delete('/logout', 'SessionsController.destroy')
+
+  Route.get('/users', 'UsersController.index')
+  Route.get('/users/:id', 'UsersController.show')
+  Route.post('/users', 'UsersController.store')
+
+  Route.get('/companies', 'CompaniesController.index')
+  Route.get('/companies/:id', 'CompaniesController.show')
+
+  Route.get('/categories', 'CategoriesController.index')
+  Route.get('/categories/:id', 'CategoriesController.show')
 })
+
+Route.group(() => {
+  // Rotas autenticadas
+  Route.put('/users/:id', 'UserController.update')
+  Route.delete('/users/:id', 'UsersController.destroy')
+
+  Route.post('/companies', 'CompaniesController.store')
+  Route.put('/companies/:id', 'CompaniesController.update')
+  Route.delete('/companies/:id', 'CompaniesController.destroy')
+}).middleware(['auth'])
+
+Route.group(() => {
+  Route.post('/categories', 'CategoriesController.store')
+  Route.put('/categories/:id', 'CategoriesController.update')
+  Route.delete('/categories/:id', 'CategoriesController.destroy')
+}).middleware(['auth', 'admin'])
