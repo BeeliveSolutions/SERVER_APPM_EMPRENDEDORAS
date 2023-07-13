@@ -1,3 +1,4 @@
+import Application from '@ioc:Adonis/Core/Application'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 
@@ -12,8 +13,6 @@ export default class UserController {
     }
   }
 
-
-  
   public async show({ params, response }: HttpContextContract) {
     try {
       const user = await User.findOrFail(params.id)
@@ -37,6 +36,12 @@ export default class UserController {
         'photo_url',
       ])
 
+      const photoUrl = request.file('photo_url')
+
+      if (photoUrl) {
+        await photoUrl.move(Application.tmpPath('./uploads'))
+      }
+      data.photo_url = photoUrl?.clientName
       // Verificar se o email já está sendo usado
       const existingUser = await User.findBy('email', data.email)
       if (existingUser) {
