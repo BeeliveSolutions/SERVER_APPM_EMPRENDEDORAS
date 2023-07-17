@@ -41,6 +41,13 @@ export default class Company extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updated_at: DateTime
 
+  @column()
+  public UF: string
+
+  @column()
+  public city: string
+
+  @column()
   @belongsTo(() => User, {
     foreignKey: 'user_id',
   })
