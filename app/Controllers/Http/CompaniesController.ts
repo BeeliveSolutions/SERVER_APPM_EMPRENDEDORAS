@@ -26,17 +26,29 @@ export default class CompanyController {
 
   public async store({ request, response }: HttpContextContract) {
     try {
-      const { name, address, description, is_physical, is_virtual, logo_url, user_id, categories } =
-        request.only([
-          'name',
-          'address',
-          'description',
-          'is_physical',
-          'is_virtual',
-          'logo_url',
-          'user_id',
-          'categories',
-        ])
+      const {
+        name,
+        address,
+        description,
+        is_physical,
+        is_virtual,
+        logo_url,
+        user_id,
+        categories,
+        UF,
+        city,
+      } = request.only([
+        'name',
+        'address',
+        'description',
+        'is_physical',
+        'is_virtual',
+        'logo_url',
+        'user_id',
+        'categories',
+        'UF',
+        'city',
+      ])
 
       const company = await Company.create({
         name,
@@ -46,6 +58,8 @@ export default class CompanyController {
         is_virtual,
         logo_url,
         user_id,
+        UF,
+        city,
       })
 
       if (categories && categories.length > 0) {
@@ -91,5 +105,54 @@ export default class CompanyController {
       console.error(error)
       return response.status(404).send('Company not found')
     }
+  }
+
+  public async filter({ request }: HttpContextContract) {
+    const { category, is_physical, is_virtual, uf, city, existence } = request.qs()
+
+    if (!category && !is_physical && !is_virtual && !uf && !city && !existence) {
+      return 'É necessário escolher pelo menos um filtro'
+    }
+
+    const query = Company.query()
+
+    if (category) {
+      query.whereExists((builder) => {
+        builder
+          .from('categories_companies')
+          .whereRaw('companies.company_id = categories_companies.company_id')
+          .whereIn('categories_companies.category_id', category.split(','))
+      })
+    }
+
+    if (is_physical) {
+      query.where('companies.is_physical', is_physical)
+    }
+
+    if (is_virtual) {
+      query.where('companies.is_virtual', is_virtual)
+    }
+
+    if (uf) {
+      query.where('companies.UF', uf)
+    }
+
+    if (city) {
+      query.where('companies.city', city)
+    }
+
+    if (existence) {
+      // Parse existence value to a valid date format
+      const existenceDate = new Date(existence)
+      query.where('companies.created_at', '>=', existenceDate)
+    }
+
+    const companies = await query
+
+    if (companies.length === 0) {
+      return 'Nenhuma empresa encontrada com os critérios de filtro fornecidos'
+    }
+
+    return companies
   }
 }

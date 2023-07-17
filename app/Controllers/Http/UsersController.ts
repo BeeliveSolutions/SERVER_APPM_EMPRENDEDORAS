@@ -34,6 +34,9 @@ export default class UserController {
         'address',
         'is_entrepreneur',
         'photo_url',
+        'description',
+        'UF',
+        'city',
       ])
 
       const photoUrl = request.file('photo_url')
@@ -67,7 +70,10 @@ export default class UserController {
         'birth_date',
         'address',
         'is_entrepreneur',
-        'photo',
+        'photo_url',
+        'description',
+        'UF',
+        'city',
       ])
 
       // Verificar se o email já está sendo usado por outro usuário
