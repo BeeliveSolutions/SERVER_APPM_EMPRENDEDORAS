@@ -35,7 +35,7 @@ export default class UserController {
         'is_entrepreneur',
         'photo_url',
         'description',
-        'UF',
+        'uf',
         'city',
       ])
 
@@ -72,7 +72,7 @@ export default class UserController {
         'is_entrepreneur',
         'photo_url',
         'description',
-        'UF',
+        'uf',
         'city',
       ])
 

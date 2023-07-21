@@ -9,10 +9,10 @@ export default class Category extends BaseModel {
   @column()
   public name: string
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({ autoCreate: true, serializeAs: null })
   public created_at: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({ autoCreate: true, autoUpdate: true, serializeAs: null })
   public updated_at: DateTime
 
   @manyToMany(() => Company, {

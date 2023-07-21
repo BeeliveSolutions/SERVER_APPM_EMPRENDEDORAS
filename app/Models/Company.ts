@@ -36,7 +36,7 @@ export default class Company extends BaseModel {
   public user_id: number
 
   @column()
-  public UF: string
+  public uf: string
 
   @column()
   public city: string
@@ -44,10 +44,10 @@ export default class Company extends BaseModel {
   @column()
   public creation_date: Date
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({ autoCreate: true, serializeAs: null })
   public created_at: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({ autoCreate: true, autoUpdate: true, serializeAs: null })
   public updated_at: DateTime
 
   @column()

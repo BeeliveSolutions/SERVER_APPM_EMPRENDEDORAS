@@ -32,17 +32,17 @@ export default class User extends BaseModel {
   @column()
   public is_admin: Boolean
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({ autoCreate: true, serializeAs: null })
   public created_at: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({ autoCreate: true, autoUpdate: true, serializeAs: null })
   public updated_at: DateTime
 
   @column()
   public description: string
 
   @column()
-  public UF: string
+  public uf: string
 
   @column()
   public city: string

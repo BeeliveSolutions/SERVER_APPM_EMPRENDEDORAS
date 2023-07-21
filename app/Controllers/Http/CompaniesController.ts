@@ -35,8 +35,9 @@ export default class CompanyController {
         logo_url,
         user_id,
         categories,
-        UF,
+        uf,
         city,
+        creation_date,
       } = request.only([
         'name',
         'address',
@@ -46,8 +47,9 @@ export default class CompanyController {
         'logo_url',
         'user_id',
         'categories',
-        'UF',
+        'uf',
         'city',
+        'creation_date',
       ])
 
       const company = await Company.create({
@@ -58,8 +60,9 @@ export default class CompanyController {
         is_virtual,
         logo_url,
         user_id,
-        UF,
+        uf,
         city,
+        creation_date,
       })
 
       if (categories && categories.length > 0) {
@@ -134,7 +137,7 @@ export default class CompanyController {
     }
 
     if (uf) {
-      query.where('companies.UF', uf)
+      query.where('companies.uf', uf)
     }
 
     if (city) {
