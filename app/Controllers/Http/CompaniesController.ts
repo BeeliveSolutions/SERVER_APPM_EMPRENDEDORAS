@@ -147,7 +147,9 @@ export default class CompanyController {
     if (existence) {
       // Parse existence value to a valid date format
       const existenceDate = new Date(existence)
-      query.where('companies.created_at', '>=', existenceDate)
+
+      console.log(existenceDate)
+      query.where('companies.creation_date', '>=', existenceDate)
     }
 
     const companies = await query
