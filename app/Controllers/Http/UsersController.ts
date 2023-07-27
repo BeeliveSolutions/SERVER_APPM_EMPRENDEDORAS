@@ -45,10 +45,12 @@ export default class UserController {
         await photoUrl.move(Application.tmpPath('./uploads'))
       }
       data.photo_url = photoUrl?.clientName
-      // Verificar se o email já está sendo usado
+
+      const phoneExist = await User.findBy('phone_number', data.phone_number)
       const existingUser = await User.findBy('email', data.email)
-      if (existingUser) {
-        return response.status(400).send('Email already exists')
+
+      if (existingUser || phoneExist) {
+        return response.status(400).send('Email Or Cellphone already exists')
       }
 
       const user = await User.create(data)
