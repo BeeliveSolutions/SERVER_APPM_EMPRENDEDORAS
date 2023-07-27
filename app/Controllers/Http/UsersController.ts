@@ -23,7 +23,7 @@ export default class UserController {
     }
   }
 
-  public async store({ request, response }: HttpContextContract) {
+  public async store({ request, response, auth }: HttpContextContract) {
     try {
       const data = request.only([
         'name',
@@ -52,7 +52,8 @@ export default class UserController {
       }
 
       const user = await User.create(data)
-      return response.created(user)
+      const token = await auth.use('api').attempt(data.email, data.password)
+      return response.ok({ token, user: user })
     } catch (error) {
       console.error(error)
       return response.status(500).send('An error occurred')

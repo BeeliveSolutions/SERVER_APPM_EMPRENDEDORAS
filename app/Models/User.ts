@@ -15,7 +15,7 @@ export default class User extends BaseModel {
   public password: string
 
   @column()
-  public phone_number: number
+  public phone_number: string
 
   @column()
   public birth_date: Date
@@ -46,6 +46,10 @@ export default class User extends BaseModel {
 
   @column()
   public city: string
+
+  @column()
+  public reset_password_token: number | null
+
   @beforeSave()
   public static async hashPassword(user: User) {
     if (user.$dirty.password) {

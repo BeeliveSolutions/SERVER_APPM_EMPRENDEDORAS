@@ -4,6 +4,8 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.group(() => {
   Route.post('/login', 'SessionsController.store')
   Route.delete('/logout', 'SessionsController.destroy')
+  Route.post('/forgot', 'SessionsController.forgotPassword')
+  Route.post('/reset', 'SessionsController.resetPassword')
 
   Route.get('/users', 'UsersController.index')
   Route.get('/users/:id', 'UsersController.show')
