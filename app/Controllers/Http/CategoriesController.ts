@@ -8,7 +8,7 @@ export default class CategoryController {
       return categories
     } catch (error) {
       console.error(error)
-      return response.status(500).send('An error occurred')
+      return response.status(500).json({ msg: 'Ocorreu um erro' })
     }
   }
 
@@ -19,7 +19,7 @@ export default class CategoryController {
       return response.ok(category)
     } catch (error) {
       console.error(error)
-      return response.status(404).send('Category not found')
+      return response.status(404).json({ msg: 'Categoria não encontrada' })
     }
   }
 
@@ -30,7 +30,7 @@ export default class CategoryController {
       return response.created(category)
     } catch (error) {
       console.error(error)
-      return response.status(500).send('An error occurred')
+      return response.status(500).json({ msg: 'Ocorreu um erro' })
     }
   }
 
@@ -43,7 +43,7 @@ export default class CategoryController {
       return response.ok(category)
     } catch (error) {
       console.error(error)
-      return response.status(404).send('Category not found')
+      return response.status(404).json({ msg: 'Categoria não encontrada' })
     }
   }
 
@@ -51,10 +51,10 @@ export default class CategoryController {
     try {
       const category = await Category.findOrFail(params.id)
       await category.delete()
-      return response.ok({ message: 'Category deleted successfully' })
+      return response.ok({ msg: 'Categoria excluída com sucesso' })
     } catch (error) {
       console.error(error)
-      return response.status(404).send('Category not found')
+      return response.status(404).json({ msg: 'Categoria não encontrada' })
     }
   }
 }
