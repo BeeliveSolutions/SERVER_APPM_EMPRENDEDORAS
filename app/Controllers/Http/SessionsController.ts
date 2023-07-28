@@ -59,7 +59,7 @@ export default class SessionsController {
       user.reset_password_token = resetToken
       await user.save()
 
-      const iAgenteSMSUrl = Env.get('SMS_USER')
+      const iAgenteSMSUrl = Env.get('SMS_MANAGER')
       const iAgenteSMSParams = new URLSearchParams({
         metodo: 'envio',
         usuario: Env.get('SMS_USER'),
