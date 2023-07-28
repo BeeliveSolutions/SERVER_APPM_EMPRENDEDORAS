@@ -8,7 +8,7 @@ export default class CompanyController {
       return response.ok(companies)
     } catch (error) {
       console.error(error)
-      return response.status(500).json({ msg: 'Ocorreu um erro' })
+      return response.status(500).send('An error occurred')
     }
   }
 
@@ -20,7 +20,7 @@ export default class CompanyController {
       return response.ok(company)
     } catch (error) {
       console.error(error)
-      return response.status(404).json({ msg: 'Empresa não encontrada' })
+      return response.status(404).send('Company not found')
     }
   }
 
@@ -75,7 +75,7 @@ export default class CompanyController {
       return response.created(company)
     } catch (error) {
       console.error(error)
-      return response.status(500).json({ msg: 'Ocorreu um erro' })
+      return response.status(500).send('An error occurred')
     }
   }
 
@@ -95,7 +95,7 @@ export default class CompanyController {
       return response.ok(company)
     } catch (error) {
       console.error(error)
-      return response.status(404).json({ msg: 'Empresa não encontrada' })
+      return response.status(404).send('Company not found')
     }
   }
 
@@ -103,10 +103,10 @@ export default class CompanyController {
     try {
       const company = await Company.findOrFail(params.id)
       await company.delete()
-      return response.ok({ msg: 'Empresa excluída com sucesso' })
+      return response.ok({ message: 'Company deleted successfully' })
     } catch (error) {
       console.error(error)
-      return response.status(404).json({ msg: 'Empresa não encontrada' })
+      return response.status(404).send('Company not found')
     }
   }
 
@@ -114,7 +114,7 @@ export default class CompanyController {
     const { category, is_physical, is_virtual, uf, city, existence } = request.qs()
 
     if (!category && !is_physical && !is_virtual && !uf && !city && !existence) {
-      return { msg: 'É necessário escolher pelo menos um filtro' }
+      return 'É necessário escolher pelo menos um filtro'
     }
 
     const query = Company.query()
@@ -155,7 +155,7 @@ export default class CompanyController {
     const companies = await query
 
     if (companies.length === 0) {
-      return { msg: 'Nenhuma empresa encontrada com os critérios de filtro fornecidos' }
+      return 'Nenhuma empresa encontrada com os critérios de filtro fornecidos'
     }
 
     return companies

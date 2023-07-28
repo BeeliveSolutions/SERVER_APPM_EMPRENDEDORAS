@@ -13,11 +13,11 @@ export default class SessionsController {
       const user = await User.findBy('email', email)
 
       if (!user) {
-        return response.badRequest({ msg: 'Usuário não encontrado' })
+        return response.badRequest('User not found')
       }
 
       if (!(await Hash.verify(user.password, password))) {
-        return response.unauthorized({ msg: 'Credenciais inválidas' })
+        return response.unauthorized('Invalid credentials')
       }
 
       const token = await auth.use('api').attempt(email, password)
@@ -31,7 +31,7 @@ export default class SessionsController {
       return response.ok({ token, user: userData })
     } catch (error) {
       console.error(error)
-      return response.status(500).json({ msg: 'Ocorreu um erro' })
+      return response.status(500).send('An error occurred')
     }
   }
 
@@ -39,10 +39,10 @@ export default class SessionsController {
     try {
       await auth.use('api').revoke()
 
-      return response.ok({ msg: 'Logout realizado com sucesso' })
+      return response.ok('Logout realizado com sucesso')
     } catch (error) {
       console.error(error)
-      return response.status(500).json({ msg: 'Ocorreu um erro' })
+      return response.status(500).send('An error occurred')
     }
   }
 
@@ -51,7 +51,7 @@ export default class SessionsController {
       const phone = request.input('phone_number')
       const user = await User.findBy('phone_number', phone)
       if (!user) {
-        return response.badRequest({ msg: 'Usuário não encontrado' })
+        return response.badRequest('User not found')
       }
 
       const resetToken = generateRandomNumbers()
@@ -84,10 +84,10 @@ export default class SessionsController {
           console.log('Error', err)
         })
 
-      return response.ok({ msg: 'SMS de redefinição de senha enviado com sucesso' })
+      return response.ok('SMS de redefinição de senha enviado com sucesso')
     } catch (error) {
       console.error(error)
-      return response.status(500).json({ msg: 'Ocorreu um erro' })
+      return response.status(500).send('An error occurred')
     }
   }
 
@@ -100,17 +100,17 @@ export default class SessionsController {
 
       // Verificar se o token fornecido pelo usuário corresponde ao token no banco de dados
       if (user.reset_password_token !== token) {
-        return response.badRequest({ msg: 'Token inválido' })
+        return response.badRequest('Invalid token')
       }
 
       // Resetar a senha do usuário
       user.reset_password_token = null // Remover o token de redefinição de senha
       user.password = newPassword // Hash da nova senha
       await user.save()
-      return response.ok({ msg: 'Senha redefinida com sucesso' })
+      return response.ok('Password reset successfully')
     } catch (error) {
       console.error(error)
-      return response.status(500).json({ msg: 'Ocorreu um erro' })
+      return response.status(500).send('An error occurred')
     }
   }
 }
