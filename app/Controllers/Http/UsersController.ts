@@ -46,11 +46,11 @@ export default class UserController {
       }
       data.photo_url = photoUrl?.clientName
 
-      const phoneExist = await User.findBy('phone_number', data.phone_number)
-      const existingUser = await User.findBy('email', data.email)
+      const phoneExist = await User.findByOrFail('phone_number', data.phone_number)
+      const existingUser = await User.findByOrFail('email', data.email)
 
       if (existingUser || phoneExist) {
-        return response.status(400).json({ msg: 'Email Or Cellphone already exists' })
+        return response.status(400).send('email or phone has already been registered')
       }
 
       const user = await User.create(data)
