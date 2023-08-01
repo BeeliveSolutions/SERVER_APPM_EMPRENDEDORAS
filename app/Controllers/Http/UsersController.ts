@@ -9,7 +9,7 @@ export default class UserController {
       return users
     } catch (error) {
       console.error(error)
-      return response.status(500).send('An error occurred')
+      return response.status(500).json({ msg: 'Ocorreu um erro' })
     }
   }
 
@@ -19,7 +19,7 @@ export default class UserController {
       return response.ok(user)
     } catch (error) {
       console.error(error)
-      return response.status(404).send('User not found')
+      return response.status(404).json({ msg: 'Usuário não encontrado' })
     }
   }
 
@@ -49,7 +49,7 @@ export default class UserController {
       const phoneExist = await User.findBy('phone_number', data.phone_number)
       const existingUser = await User.findBy('email', data.email)
       if (existingUser || phoneExist) {
-        return response.status(400).json({ msg: 'email or phone has already been registered' })
+        return response.status(400).json({ msg: 'O email ou telefone já está registrado' })
       }
 
       const user = await User.create(data)
@@ -57,7 +57,7 @@ export default class UserController {
       return response.ok({ token, user: user })
     } catch (error) {
       console.error(error)
-      return response.status(500).json({ msg: 'An error occurred' })
+      return response.status(500).json({ msg: 'Ocorreu um erro' })
     }
   }
 
@@ -82,7 +82,7 @@ export default class UserController {
       if (data.email && data.email !== user.email) {
         const existingUser = await User.findBy('email', data.email)
         if (existingUser) {
-          return response.status(400).send('Email already exists')
+          return response.status(400).json({ msg: 'Email já está em uso' })
         }
       }
 
@@ -91,7 +91,7 @@ export default class UserController {
       return response.ok(user)
     } catch (error) {
       console.error(error)
-      return response.status(404).send('User not found')
+      return response.status(404).json({ msg: 'Usuário não encontrado' })
     }
   }
 
@@ -99,10 +99,10 @@ export default class UserController {
     try {
       const user = await User.findOrFail(params.id)
       await user.delete()
-      return response.ok({ message: 'User deleted successfully' })
+      return response.ok({ msg: 'Usuário deletado com sucesso' })
     } catch (error) {
       console.error(error)
-      return response.status(404).send('User not found')
+      return response.status(404).json({ msg: 'Usuário não encontrado' })
     }
   }
 }
